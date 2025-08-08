@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nest & EJS ❤</title>
+
+    <!-- CSS (load bootstrap from a CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding-top: 50px;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <h2>Всего записей: <%= count %></h2>
+    <main>
+      <form method="POST" action="/submit">
+        <textarea name="text" rows="5" cols="40"></textarea>
+        <br />
+        <button type="submit">Отправить</button>
+      </form>
+    </main>
+  </body>
+</html>
