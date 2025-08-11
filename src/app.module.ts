@@ -6,7 +6,7 @@ import { CourierModule } from './courier/courier.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: `${process.env.NODE_ENV === 'development' ? `.env.${process.env.NODE_ENV}` : '.env'}`,
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
