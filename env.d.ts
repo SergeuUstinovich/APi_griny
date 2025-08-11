@@ -1,5 +1,6 @@
 declare namespace NodeJS {
   interface ProcessEnv {
+    HOST: string;
     PORT: string;
     DB_HOST: string;
     DB_PORT: string;
