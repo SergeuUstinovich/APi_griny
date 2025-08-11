@@ -14,7 +14,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata: /var/lib/postgresql/data
+      - /root/APi_griny/storage/postgres/data:/var/lib/postgresql/data
     restart: always
     networks:
       - api_griny
@@ -47,9 +47,6 @@ services:
       restart: always
       networks:
         - api_griny
-
-volumes:
-  pgdata:
 
 networks:
   api_griny:
