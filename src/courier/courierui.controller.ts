@@ -16,7 +16,7 @@ export class CourierUiController {
   @Post('/submit')
   async submitForm(@Body('text') text: string, @Res() res: Response) {
     const lines = text
-      .split('/\r?\n/')
+      .split(/\r?\n/)
       .map(line => line.trim())   
       .filter(line => line);
     await this.courierService.createCourier(lines);
