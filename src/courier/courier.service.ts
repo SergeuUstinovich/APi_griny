@@ -28,12 +28,12 @@ export class CourierService {
 
     await this.courierRepository.remove(courier);
 
-    return courier;
+    return courier.request;
   }
 
-  async createCourier(text: string) {
-    const courier = this.courierRepository.create({ request: text });
-    return await this.courierRepository.save(courier);
+  async createCourier(text: string[]) {
+    const couriers = text.map(text => this.courierRepository.create({ request: text }));
+    return await this.courierRepository.save(couriers);
   }
 
   async getCourierCount(): Promise<number> {

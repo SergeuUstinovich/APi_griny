@@ -15,7 +15,11 @@ export class CourierUiController {
 
   @Post('/submit')
   async submitForm(@Body('text') text: string, @Res() res: Response) {
-    await this.courierService.createCourier(text);
+    const lines = text
+      .split('/\r?\n/')
+      .map(line => line.trim())   
+      .filter(line => line);
+    await this.courierService.createCourier(lines);
     return res.redirect('/');
   }
 }
