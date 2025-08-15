@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourierModule } from './courier/courier.module';
+import { TextparserModule } from './textparser/textparser.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CourierModule } from './courier/courier.module';
       autoLoadEntities: true,
     }),
     CourierModule,
+    TextparserModule,
   ],
   controllers: [],
   providers: [],
