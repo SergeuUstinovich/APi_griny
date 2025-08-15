@@ -15,7 +15,7 @@ export class TextparserService {
     private readonly courierRepository: Repository<Courier>,
   ) {}
 
-//   @Interval(10000)
+  @Interval(10000)
   async fetchAndSave() {
     const url = 'https://topsbor.com/get-interest-query/BLhhWspLgFAHTX64QVdiqZKv';
 
