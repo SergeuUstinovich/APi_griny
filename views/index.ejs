@@ -18,6 +18,12 @@
   <body class="container">
     <h2>Всего записей: <%= count %></h2>
     <main>
+      <form method="POST" action="/saveUrl">
+        <label for="url">URL запроса:</label><br />
+        <input type="text" name="url" style="width: 600px;" value="<%= url || '' %>" /><br /><br />
+        <button type="submit">Сохранить</button>
+      </form>
+      <br>
       <form method="POST" action="/submit">
         <textarea style="width: 600px;" name="text" rows="5" cols="40"></textarea>
         <br />

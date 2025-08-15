@@ -13,6 +13,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       TypeOrmModule.forFeature([Courier]),
       HttpModule,
       ScheduleModule.forRoot(),
-  ]
+  ],
+  exports: [TextparserService]
 })
 export class TextparserModule {}
