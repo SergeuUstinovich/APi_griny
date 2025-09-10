@@ -39,6 +39,9 @@ export class TextparserService {
 
   @Interval(10000)
   async fetchAndSave() {
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
     try {
       const url = this.getTargetUrl();
       const { data, status } = await firstValueFrom(
@@ -54,7 +57,6 @@ export class TextparserService {
       const entry = this.courierRepository.create({ request: bodyText });
       return await this.courierRepository.save(entry);
     } catch (error) {
-
       if (error instanceof HttpException) {
         throw error;
       }

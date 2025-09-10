@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourierModule } from './courier/courier.module';
 import { TextparserModule } from './textparser/textparser.module';
+import { ProjectsModule } from './projects/projects.module';
+import { RequestsModule } from './requests/requests.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { TextparserModule } from './textparser/textparser.module';
     }),
     CourierModule,
     TextparserModule,
+    ProjectsModule,
+    RequestsModule,
   ],
   controllers: [],
   providers: [],
