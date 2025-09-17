@@ -45,7 +45,7 @@ export class TextparserService {
     try {
       const url = this.getTargetUrl();
       const { data, status } = await firstValueFrom(
-        this.httpService.get(url, { timeout: 5000 }),
+        this.httpService.get(url, { timeout: 10000 }),
       );
 
       if (status === 404 || !data) {
