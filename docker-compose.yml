@@ -36,7 +36,7 @@ services:
       context: ../client
     container_name: client
     volumes:
-      - client:/app
+      - client-dist:/app/dist
     networks:
       - api_griny
     env_file:
@@ -48,7 +48,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/letsencrypt
-      - client:/client
+      - client-dist:/client/dist
     ports:
       - "80:80"
       - "443:443"
@@ -62,3 +62,6 @@ services:
 networks:
   api_griny:
     external: true
+
+volumes:
+  client-dist:
