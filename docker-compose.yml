@@ -31,16 +31,16 @@ services:
     networks:
       - api_griny
   
-    client:
-      build:
-        context: ../client
-      container_name: client
-      volumes:
-        - client:/app
-      networks:
-        - api_griny
-      env_file:
-        - ../client/.env
+  client:
+    build:
+      context: ../client
+    container_name: client
+    volumes:
+      - client:/app
+    networks:
+      - api_griny
+    env_file:
+      - ../client/.env
 
   nginx:
     image: nginx:latest
