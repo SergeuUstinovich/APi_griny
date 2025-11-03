@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Courier } from 'src/courier/courier.entity';
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DynamicRequestService } from './dynamicrequest.service';
 
 @Module({
-  providers: [TextparserService],
+  providers: [TextparserService, DynamicRequestService],
   controllers: [TextparserController],
   imports: [
       TypeOrmModule.forFeature([Courier]),

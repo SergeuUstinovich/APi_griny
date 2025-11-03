@@ -5,6 +5,7 @@ import { CourierModule } from './courier/courier.module';
 import { TextparserModule } from './textparser/textparser.module';
 import { ProjectsModule } from './projects/projects.module';
 import { RequestsModule } from './requests/requests.module';
+import { ProxyModule } from './proxy/proxy.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RequestsModule } from './requests/requests.module';
     TextparserModule,
     ProjectsModule,
     RequestsModule,
+    ProxyModule,
   ],
   controllers: [],
   providers: [],

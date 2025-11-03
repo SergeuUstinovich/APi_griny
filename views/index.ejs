@@ -13,22 +13,50 @@
       body {
         padding-top: 50px;
       }
+      .container {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+      }
     </style>
   </head>
   <body class="container">
-    <h2>Всего записей: <%= count %></h2>
-    <main>
-      <form method="POST" action="/saveUrl">
-        <label for="url">URL запроса:</label><br />
-        <input type="text" name="url" style="width: 600px;" value="<%= url || '' %>" /><br /><br />
-        <button type="submit">Сохранить</button>
-      </form>
-      <br>
-      <form method="POST" action="/submit">
-        <textarea style="width: 600px;" name="text" rows="5" cols="40"></textarea>
-        <br />
-        <button type="submit">Отправить</button>
-      </form>
+    <div>
+      <h1>Курьер</h1>
+      <h2>Всего записей: <%= countCourier %></h2>
+      <main>
+        <form method="POST" action="/saveUrlCourier">
+          <label for="url">URL запроса:</label><br />
+          <input type="text" name="url" style="width: 600px;" value="<%= urlCourier || '' %>" /><br /><br />
+          <button type="submit">Сохранить</button>
+        </form>
+        <br>
+        <form method="POST" action="/submitCourier">
+          <textarea style="width: 600px;" name="text" rows="5" cols="40"></textarea>
+          <br />
+          <button type="submit">Отправить</button>
+        </form>
+    </div>
+    <div>
+      <h1>Прокси</h1>
+      <main>
+        <form method="POST" action="/submitProxy">
+          <input style="width: 600px;" name="proxy" />
+          <br />
+          <button type="submit">Добавить</button>
+        </form>
+        <h3>Список прокси:</h3>
+
+        <% if (allProxy && allProxy.length > 0) { %>
+          <ul>
+            <% allProxy.forEach(proxy => { %>
+              <li><%= proxy.proxy %></li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p>Прокси пока нет</p>
+        <% } %>
+      </div>
     </main>
   </body>
 </html>
