@@ -1,3 +1,3 @@
 export class CreateProxyDto {
-    proxy: string;
+    proxy: string[];
 }

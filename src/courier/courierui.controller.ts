@@ -40,7 +40,11 @@ export class CourierUiController {
   }
 
   @Post('/submitProxy')
-  async submitProxy(@Body('proxy') proxy: string, @Res() res: Response) {
+  async submitProxy(@Body('proxy') proxys: string, @Res() res: Response) {
+    const proxy = proxys
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line);
     await this.proxyService.createProxy({proxy});
     return res.redirect('/');
   }

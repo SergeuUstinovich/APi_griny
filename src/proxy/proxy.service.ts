@@ -32,8 +32,8 @@ export class ProxyService {
   }
 
   async createProxy(dto: CreateProxyDto) {
-    const newProxy = this.proxyRepo.create(dto);
-    return await this.proxyRepo.save(newProxy);
+    const proxys = dto.proxy.map(text => this.proxyRepo.create({ proxy: text }));
+    return await this.proxyRepo.save(proxys);
   }
 
   async getAllProxy() {
