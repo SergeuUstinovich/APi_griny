@@ -42,6 +42,15 @@ services:
     env_file:
       - ../client/.env
 
+  php:
+    image: php:8.3-fpm
+    container_name: php-fpm
+    volumes:
+      - /root/APi_griny/php:/var/www/html
+    restart: always
+    networks:
+      - api_griny
+
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -49,12 +58,14 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /etc/letsencrypt:/letsencrypt
       - client-dist:/client/dist
+      - /root/APi_griny/php:/var/www/html 
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - main
       - client
+      - php
     restart: always
     networks:
       - api_griny
