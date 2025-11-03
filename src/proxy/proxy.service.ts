@@ -39,4 +39,16 @@ export class ProxyService {
   async getAllProxy() {
     return await this.proxyRepo.find()
   }
+
+  async deleteProxy(id: string) {
+    const proxy = await this.proxyRepo.findOne({
+      where: { id }
+    });
+
+    if (!proxy) throw new NotFoundException('Прокси не найдет');
+
+    await this.proxyRepo.remove(proxy);
+
+    return { message: 'Прокси удален' };
+  }
 }

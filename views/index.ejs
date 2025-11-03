@@ -50,7 +50,13 @@
         <% if (allProxy && allProxy.length > 0) { %>
           <ul>
             <% allProxy.forEach(proxy => { %>
-              <li><%= proxy.proxy %></li>
+              <li>
+                <p><%= proxy.proxy %></p>
+                <form method="POST" action="/deleteProxy">
+                  <input type="hidden" name="idProxy" value="<%= proxy.id %>" />
+                  <button type="submit">Удалить</button>
+                </form>
+              </li>
             <% }); %>
           </ul>
         <% } else { %>

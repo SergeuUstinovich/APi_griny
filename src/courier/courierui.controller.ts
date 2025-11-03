@@ -44,4 +44,10 @@ export class CourierUiController {
     await this.proxyService.createProxy({proxy});
     return res.redirect('/');
   }
+
+  @Post('/deleteProxy')
+  async deleteProxy(@Body('idProxy') id: string, @Res() res: Response) {
+    await this.proxyService.deleteProxy(id);
+    return res.redirect('/');
+  }
 }
