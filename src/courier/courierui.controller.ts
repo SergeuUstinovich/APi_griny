@@ -3,6 +3,7 @@ import { CourierService } from './courier.service';
 import type { Response } from 'express';
 import { TextparserService } from 'src/textparser/textparser.service';
 import { ProxyService } from 'src/proxy/proxy.service';
+import { ProxyMaksService } from 'src/proxy-maks/proxy-maks.service';
 
 @Controller()
 export class CourierUiController {
@@ -10,6 +11,7 @@ export class CourierUiController {
     private readonly courierService: CourierService,
     private readonly textparserService: TextparserService,
     private readonly proxyService: ProxyService,
+    private readonly proxyMaksService: ProxyMaksService,
   ) {}
 
   @Get()
@@ -18,7 +20,8 @@ export class CourierUiController {
     const countCourier = await this.courierService.getCourierCount();
     const urlCourier = this.textparserService.getTargetUrl('courier-url.txt', 'https://topsbor.com/get-interest-query/BLhhWspLgFAHTX64QVdiqZKv');
     const allProxy = await this.proxyService.getAllProxy()
-    return { countCourier, urlCourier, allProxy };
+    const allProxyMaks = await this.proxyMaksService.getAllProxy()
+    return { countCourier, urlCourier, allProxy, allProxyMaks };
   }
 
   @Post('/submitCourier')
@@ -52,6 +55,22 @@ export class CourierUiController {
   @Post('/deleteProxy')
   async deleteProxy(@Body('idProxy') id: string, @Res() res: Response) {
     await this.proxyService.deleteProxy(id);
+    return res.redirect('/');
+  }
+
+  @Post('/submitProxyMaks')
+  async submitProxyMaks(@Body('proxyMaks') proxys: string, @Res() res: Response) {
+    const proxy = proxys
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line);
+    await this.proxyMaksService.createProxy({proxy});
+    return res.redirect('/');
+  }
+
+  @Post('/deleteProxyMaks')
+  async deleteProxyMaks(@Body('idProxyMaks') id: string, @Res() res: Response) {
+    await this.proxyMaksService.deleteProxy(id);
     return res.redirect('/');
   }
 }

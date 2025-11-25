@@ -16,7 +16,12 @@
       .container {
         display: flex;
         align-items: flex-start;
+        flex-wrap: wrap;
         gap: 50px;
+      }
+      .proxyBox {
+        display: flex;
+        gap: 16px;
       }
     </style>
   </head>
@@ -37,8 +42,9 @@
           <button type="submit">Отправить</button>
         </form>
     </div>
-    <div>
-      <h1>Прокси</h1>
+    <div class="proxyBox">
+      <div>
+      <h1>Прокси Гриша</h1>
       <main>
         <form method="POST" action="/submitProxy">
           <textarea style="width: 600px;" name="proxy" rows="5" cols="40"></textarea>
@@ -62,7 +68,35 @@
         <% } else { %>
           <p>Прокси пока нет</p>
         <% } %>
-      </div>
+    </div>
+    <div>
+      <h1>Прокси Макс</h1>
+      <main>
+        <form method="POST" action="/submitProxyMaks">
+          <textarea style="width: 600px;" name="proxyMaks" rows="5" cols="40"></textarea>
+          <br />
+          <button type="submit">Добавить</button>
+        </form>
+        <h3>Список прокси:</h3>
+
+        <% if (allProxyMaks && allProxyMaks.length > 0) { %>
+          <ul>
+            <% allProxyMaks.forEach(proxy => { %>
+              <li>
+                <p><%= proxy.proxy %></p>
+                <form method="POST" action="/deleteProxyMaks">
+                  <input type="hidden" name="idProxyMaks" value="<%= proxy.id %>" />
+                  <button type="submit">Удалить</button>
+                </form>
+              </li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p>Прокси пока нет</p>
+        <% } %>
+    </div>
+    </div>
+    
     </main>
   </body>
 </html>

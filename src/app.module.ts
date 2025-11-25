@@ -6,6 +6,7 @@ import { TextparserModule } from './textparser/textparser.module';
 import { ProjectsModule } from './projects/projects.module';
 import { RequestsModule } from './requests/requests.module';
 import { ProxyModule } from './proxy/proxy.module';
+import { ProxyMaksModule } from './proxy-maks/proxy-maks.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ProxyModule } from './proxy/proxy.module';
     ProjectsModule,
     RequestsModule,
     ProxyModule,
+    ProxyMaksModule,
   ],
   controllers: [],
   providers: [],

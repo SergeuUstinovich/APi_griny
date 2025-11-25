@@ -6,6 +6,7 @@ import { Courier } from './courier.entity';
 import { CourierUiController } from './courierui.controller';
 import { TextparserModule } from 'src/textparser/textparser.module';
 import { ProxyModule } from 'src/proxy/proxy.module';
+import { ProxyMaksModule } from 'src/proxy-maks/proxy-maks.module';
 
 @Module({
   providers: [CourierService],
@@ -13,7 +14,8 @@ import { ProxyModule } from 'src/proxy/proxy.module';
   imports: [
     TypeOrmModule.forFeature([Courier]),
     TextparserModule,
-    ProxyModule
+    ProxyModule,
+    ProxyMaksModule
   ]
 })
 export class CourierModule {}
