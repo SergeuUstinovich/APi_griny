@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Render, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Render, Res, UseGuards } from '@nestjs/common';
 import { CourierService } from './courier.service';
 import type { Response } from 'express';
 import { TextparserService } from 'src/textparser/textparser.service';
 import { ProxyService } from 'src/proxy/proxy.service';
 import { ProxyMaksService } from 'src/proxy-maks/proxy-maks.service';
+import { BasicAuthGuard } from 'src/common/guards/basic-auth.guard';
 
+@UseGuards(BasicAuthGuard)
 @Controller()
 export class CourierUiController {
   constructor(
