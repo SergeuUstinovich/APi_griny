@@ -6,7 +6,9 @@ export class ProxyMaksKeyGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const apiKey = request.headers['x-api-key'];
+
+    // читаем ключ из query параметров
+    const apiKey = request.query.xapikey;
 
     if (!apiKey || !this.validKeys.includes(apiKey)) {
       throw new UnauthorizedException('Неверный или отсутствующий API ключ');

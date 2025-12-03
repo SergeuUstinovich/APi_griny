@@ -2,11 +2,13 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 
 @Injectable()
 export class ProxyKeyGuard implements CanActivate {
-  private readonly validKeys = ['rk.xlkzuhbis']; // тут твои ключи
+  private readonly validKeys = ['rk.xlkzuhbis']; // твои ключи
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const apiKey = request.headers['x-api-key'];
+
+    // читаем ключ из query параметров
+    const apiKey = request.query.xapikey;
 
     if (!apiKey || !this.validKeys.includes(apiKey)) {
       throw new UnauthorizedException('Неверный или отсутствующий API ключ');
