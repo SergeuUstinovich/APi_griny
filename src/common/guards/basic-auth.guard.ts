@@ -2,7 +2,6 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 
 @Injectable()
@@ -11,20 +10,30 @@ export class BasicAuthGuard implements CanActivate {
   private readonly password = 'ckj;ysqgfhjkm';
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers['authorization'];
+    const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
+
+    const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-      throw new UnauthorizedException('Unauthorized');
+      res
+        .status(401)
+        .setHeader('WWW-Authenticate', 'Basic realm="Courier UI"')
+        .send('Unauthorized');
+      return false;
     }
 
     const base64Credentials = authHeader.split(' ')[1];
     const [user, pass] = Buffer.from(base64Credentials, 'base64')
-      .toString('utf-8')
+      .toString()
       .split(':');
 
     if (user !== this.username || pass !== this.password) {
-      throw new UnauthorizedException('Invalid credentials');
+      res
+        .status(401)
+        .setHeader('WWW-Authenticate', 'Basic realm="Courier UI"')
+        .send('Unauthorized');
+      return false;
     }
 
     return true;

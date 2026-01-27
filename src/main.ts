@@ -14,11 +14,6 @@ async function bootstrap() {
     origin: ['https://100ftdperday.club'],
   });
 
-  app.use((req, res, next) => {
-    res.setHeader('WWW-Authenticate', 'Basic realm="Courier UI"');
-    next();
-  });
-
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
 
