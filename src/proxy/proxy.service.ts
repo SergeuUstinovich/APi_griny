@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Proxy } from './proxy.entity';
 import { CreateProxyDto } from './dto/create-proxy.dto';
+import { ProxyType } from './proxy-type.enum';
 
 @Injectable()
 export class ProxyService {
@@ -13,8 +14,11 @@ export class ProxyService {
     private readonly proxyRepo: Repository<Proxy>,
   ) {}
 
-  async getNextProxy(): Promise<string> {
-    const proxies = await this.proxyRepo.find({ order: { createdAt: 'ASC' } });
+  async getNextProxy(type: ProxyType): Promise<string> {
+    const proxies = await this.proxyRepo.find({
+      where: { type },
+      order: { createdAt: 'ASC' },
+    });
 
     if (!proxies.length) {
       throw new NotFoundException('Нет доступных прокси в базе данных');
@@ -32,17 +36,21 @@ export class ProxyService {
   }
 
   async createProxy(dto: CreateProxyDto) {
-    const proxys = dto.proxy.map(text => this.proxyRepo.create({ proxy: text }));
+    const proxys = dto.proxy.map((text) =>
+      this.proxyRepo.create({ proxy: text, type: dto.type }),
+    );
     return await this.proxyRepo.save(proxys);
   }
 
-  async getAllProxy() {
-    return await this.proxyRepo.find()
+  async getAllProxy(type: ProxyType) {
+    return await this.proxyRepo.find({
+      where: { type },
+    });
   }
 
   async deleteProxy(id: string) {
     const proxy = await this.proxyRepo.findOne({
-      where: { id }
+      where: { id },
     });
 
     if (!proxy) throw new NotFoundException('Прокси не найдет');

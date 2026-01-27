@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Body, Render, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Render,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { CourierService } from './courier.service';
 import type { Response } from 'express';
 import { TextparserService } from 'src/textparser/textparser.service';
 import { ProxyService } from 'src/proxy/proxy.service';
 import { ProxyMaksService } from 'src/proxy-maks/proxy-maks.service';
 import { BasicAuthGuard } from 'src/common/guards/basic-auth.guard';
+import { ProxyType } from 'src/proxy/proxy-type.enum';
+import { ProxyTypeMaks } from 'src/proxy-maks/proxy-maks-type.enum';
 
 @UseGuards(BasicAuthGuard)
 @Controller()
@@ -20,10 +30,23 @@ export class CourierUiController {
   @Render('index')
   async showForm() {
     const countCourier = await this.courierService.getCourierCount();
-    const urlCourier = this.textparserService.getTargetUrl('courier-url.txt', 'https://topsbor.com/get-interest-query/BLhhWspLgFAHTX64QVdiqZKv');
-    const allProxy = await this.proxyService.getAllProxy()
-    const allProxyMaks = await this.proxyMaksService.getAllProxy()
-    return { countCourier, urlCourier, allProxy, allProxyMaks };
+    const urlCourier = this.textparserService.getTargetUrl(
+      'courier-url.txt',
+      'https://topsbor.com/get-interest-query/BLhhWspLgFAHTX64QVdiqZKv',
+    );
+    const allProxyRez = await this.proxyService.getAllProxy(
+      ProxyType.RESIDENTIAL,
+    );
+    const allProxyMaksRez = await this.proxyMaksService.getAllProxy(
+      ProxyTypeMaks.RESIDENTIAL,
+    );
+    const allProxyMob = await this.proxyService.getAllProxy(
+      ProxyType.MOBILE,
+    );
+    const allProxyMaksMob = await this.proxyMaksService.getAllProxy(
+      ProxyTypeMaks.MOBILE,
+    );
+    return { countCourier, urlCourier, allProxyRez, allProxyMaksRez, allProxyMob, allProxyMaksMob };
   }
 
   @Post('/submitCourier')
@@ -44,13 +67,23 @@ export class CourierUiController {
     return res.redirect('/');
   }
 
-  @Post('/submitProxy')
-  async submitProxy(@Body('proxy') proxys: string, @Res() res: Response) {
+  @Post('/submitProxyRez')
+  async submitProxyRez(@Body('proxy') proxys: string, @Res() res: Response) {
     const proxy = proxys
       .split(/\r?\n/)
       .map((line) => line.trim())
       .filter((line) => line);
-    await this.proxyService.createProxy({proxy});
+    await this.proxyService.createProxy({ proxy, type: ProxyType.RESIDENTIAL });
+    return res.redirect('/');
+  }
+
+  @Post('/submitProxyMob')
+  async submitProxyMob(@Body('proxy') proxys: string, @Res() res: Response) {
+    const proxy = proxys
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line);
+    await this.proxyService.createProxy({ proxy, type: ProxyType.MOBILE });
     return res.redirect('/');
   }
 
@@ -60,13 +93,35 @@ export class CourierUiController {
     return res.redirect('/');
   }
 
-  @Post('/submitProxyMaks')
-  async submitProxyMaks(@Body('proxyMaks') proxys: string, @Res() res: Response) {
+  @Post('/submitProxyMaksRez')
+  async submitProxyMaksRez(
+    @Body('proxyMaks') proxys: string,
+    @Res() res: Response,
+  ) {
     const proxy = proxys
       .split(/\r?\n/)
       .map((line) => line.trim())
       .filter((line) => line);
-    await this.proxyMaksService.createProxy({proxy});
+    await this.proxyMaksService.createProxy({
+      proxy,
+      type: ProxyTypeMaks.RESIDENTIAL,
+    });
+    return res.redirect('/');
+  }
+
+  @Post('/submitProxyMaksMob')
+  async submitProxyMaksMob(
+    @Body('proxyMaks') proxys: string,
+    @Res() res: Response,
+  ) {
+    const proxy = proxys
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line);
+    await this.proxyMaksService.createProxy({
+      proxy,
+      type: ProxyTypeMaks.MOBILE,
+    });
     return res.redirect('/');
   }
 

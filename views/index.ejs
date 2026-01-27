@@ -23,6 +23,11 @@
         display: flex;
         gap: 16px;
       }
+
+      .prozyGriny {
+        display: flex;
+        gap: 10px;
+      }
     </style>
   </head>
   <body class="container">
@@ -43,19 +48,19 @@
         </form>
     </div>
     <div class="proxyBox">
+      <div class="prozyGriny">
       <div>
-      <h1>Прокси Гриша</h1>
-      <main>
-        <form method="POST" action="/submitProxy">
-          <textarea style="width: 600px;" name="proxy" rows="5" cols="40"></textarea>
+        <h1>Прокси Гриша Резидента</h1>
+        <form method="POST" action="/submitProxyRez">
+          <textarea style="width: 300px;" name="proxy" rows="5" cols="40"></textarea>
           <br />
           <button type="submit">Добавить</button>
         </form>
         <h3>Список прокси:</h3>
 
-        <% if (allProxy && allProxy.length > 0) { %>
+        <% if (allProxyRez && allProxyRez.length > 0) { %>
           <ul>
-            <% allProxy.forEach(proxy => { %>
+            <% allProxyRez.forEach(proxy => { %>
               <li>
                 <p><%= proxy.proxy %></p>
                 <form method="POST" action="/deleteProxy">
@@ -68,20 +73,46 @@
         <% } else { %>
           <p>Прокси пока нет</p>
         <% } %>
-    </div>
-    <div>
-      <h1>Прокси Макс</h1>
-      <main>
-        <form method="POST" action="/submitProxyMaks">
-          <textarea style="width: 600px;" name="proxyMaks" rows="5" cols="40"></textarea>
+      </div>
+      <div>
+        <h1>Прокси Гриша Мобилка</h1>
+        <form method="POST" action="/submitProxyMob">
+          <textarea style="width: 300px;" name="proxy" rows="5" cols="40"></textarea>
           <br />
           <button type="submit">Добавить</button>
         </form>
         <h3>Список прокси:</h3>
 
-        <% if (allProxyMaks && allProxyMaks.length > 0) { %>
+        <% if (allProxyMob && allProxyMob.length > 0) { %>
           <ul>
-            <% allProxyMaks.forEach(proxy => { %>
+            <% allProxyMob.forEach(proxy => { %>
+              <li>
+                <p><%= proxy.proxy %></p>
+                <form method="POST" action="/deleteProxy">
+                  <input type="hidden" name="idProxy" value="<%= proxy.id %>" />
+                  <button type="submit">Удалить</button>
+                </form>
+              </li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p>Прокси пока нет</p>
+        <% } %>
+      </div>
+    </div>
+    <div class="prozyGriny">
+      <div>
+        <h1>Прокси Макс Резидента</h1>
+        <form method="POST" action="/submitProxyMaksRez">
+          <textarea style="width: 300px;" name="proxyMaks" rows="5" cols="40"></textarea>
+          <br />
+          <button type="submit">Добавить</button>
+        </form>
+        <h3>Список прокси:</h3>
+
+        <% if (allProxyMaksRez && allProxyMaksRez.length > 0) { %>
+          <ul>
+            <% allProxyMaksRez.forEach(proxy => { %>
               <li>
                 <p><%= proxy.proxy %></p>
                 <form method="POST" action="/deleteProxyMaks">
@@ -94,9 +125,32 @@
         <% } else { %>
           <p>Прокси пока нет</p>
         <% } %>
+      </div>
+      <div>
+        <h1>Прокси Макс Мобилка</h1>
+        <form method="POST" action="/submitProxyMaksMob">
+          <textarea style="width: 300px;" name="proxyMaks" rows="5" cols="40"></textarea>
+          <br />
+          <button type="submit">Добавить</button>
+        </form>
+        <h3>Список прокси:</h3>
+
+        <% if (allProxyMaksMob && allProxyMaksMob.length > 0) { %>
+          <ul>
+            <% allProxyMaksMob.forEach(proxy => { %>
+              <li>
+                <p><%= proxy.proxy %></p>
+                <form method="POST" action="/deleteProxyMaks">
+                  <input type="hidden" name="idProxyMaks" value="<%= proxy.id %>" />
+                  <button type="submit">Удалить</button>
+                </form>
+              </li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          <p>Прокси пока нет</p>
+        <% } %>
+      </div>
     </div>
-    </div>
-    
-    </main>
   </body>
 </html>
