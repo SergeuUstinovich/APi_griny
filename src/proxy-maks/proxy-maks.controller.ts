@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ProxyMaksService } from './proxy-maks.service';
 import { ProxyMaksKeyGuard } from 'src/common/guards/proxy-maks.guard';
-import { ProxyTypeMaks } from './proxy-maks-type.enum';
+import { ProxyType } from 'src/proxy/proxy-type.enum';
 
 @Controller('proxy-maks')
 export class ProxyMaksController {
@@ -9,7 +9,7 @@ export class ProxyMaksController {
 
   @UseGuards(ProxyMaksKeyGuard)
   @Get('maxmeego')
-  async getNextProxy(@Query('type') type: ProxyTypeMaks = ProxyTypeMaks.RESIDENTIAL) {
+  async getNextProxy(@Query('type') type: ProxyType = ProxyType.RESIDENTIAL) {
     return this.proxyMaksService.getNextProxy(type);
   }
 }

@@ -1,5 +1,5 @@
+import { ProxyType } from 'src/proxy/proxy-type.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ProxyTypeMaks } from './proxy-maks-type.enum';
 
 @Entity()
 export class ProxyMaks {
@@ -11,10 +11,10 @@ export class ProxyMaks {
 
   @Column({
     type: 'enum',
-    enum: ProxyTypeMaks,
-    default: ProxyTypeMaks.RESIDENTIAL,
+    enum: ProxyType,
+    default: ProxyType.RESIDENTIAL,
   })
-  type: ProxyTypeMaks;
+  type: ProxyType;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

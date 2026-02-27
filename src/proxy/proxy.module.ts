@@ -3,12 +3,13 @@ import { ProxyService } from './proxy.service';
 import { ProxyController } from './proxy.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Proxy } from './proxy.entity';
+import { ProxyMaks } from 'src/proxy-maks/proxy-maks.entity';
 
 @Module({
   providers: [ProxyService],
   controllers: [ProxyController],
   imports: [
-      TypeOrmModule.forFeature([Proxy]),
+      TypeOrmModule.forFeature([Proxy, ProxyMaks]),
   ],
   exports: [ProxyService]
 })

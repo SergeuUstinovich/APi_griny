@@ -1,6 +1,6 @@
-import { ProxyTypeMaks } from "../proxy-maks-type.enum";
+import { ProxyType } from "src/proxy/proxy-type.enum";
 
 export class CreateProxyMaksDto {
     proxy: string[];
-    type: ProxyTypeMaks;
+    type: ProxyType;
 }

@@ -14,7 +14,6 @@ import { ProxyService } from 'src/proxy/proxy.service';
 import { ProxyMaksService } from 'src/proxy-maks/proxy-maks.service';
 import { BasicAuthGuard } from 'src/common/guards/basic-auth.guard';
 import { ProxyType } from 'src/proxy/proxy-type.enum';
-import { ProxyTypeMaks } from 'src/proxy-maks/proxy-maks-type.enum';
 
 @UseGuards(BasicAuthGuard)
 @Controller()
@@ -38,13 +37,13 @@ export class CourierUiController {
       ProxyType.RESIDENTIAL,
     );
     const allProxyMaksRez = await this.proxyMaksService.getAllProxy(
-      ProxyTypeMaks.RESIDENTIAL,
+      ProxyType.RESIDENTIAL,
     );
     const allProxyMob = await this.proxyService.getAllProxy(
       ProxyType.MOBILE,
     );
     const allProxyMaksMob = await this.proxyMaksService.getAllProxy(
-      ProxyTypeMaks.MOBILE,
+      ProxyType.MOBILE,
     );
     return { countCourier, urlCourier, allProxyRez, allProxyMaksRez, allProxyMob, allProxyMaksMob };
   }
@@ -104,7 +103,7 @@ export class CourierUiController {
       .filter((line) => line);
     await this.proxyMaksService.createProxy({
       proxy,
-      type: ProxyTypeMaks.RESIDENTIAL,
+      type: ProxyType.RESIDENTIAL,
     });
     return res.redirect('/');
   }
@@ -120,7 +119,7 @@ export class CourierUiController {
       .filter((line) => line);
     await this.proxyMaksService.createProxy({
       proxy,
-      type: ProxyTypeMaks.MOBILE,
+      type: ProxyType.MOBILE,
     });
     return res.redirect('/');
   }

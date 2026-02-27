@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { Proxy } from './proxy.entity';
 import { CreateProxyDto } from './dto/create-proxy.dto';
 import { ProxyType } from './proxy-type.enum';
+import { ProxyMaks } from 'src/proxy-maks/proxy-maks.entity';
 
 @Injectable()
 export class ProxyService {
@@ -12,6 +17,8 @@ export class ProxyService {
   constructor(
     @InjectRepository(Proxy)
     private readonly proxyRepo: Repository<Proxy>,
+    @InjectRepository(ProxyMaks)
+    private readonly proxyMaksRepo: Repository<ProxyMaks>,
   ) {}
 
   async getNextProxy(type: ProxyType): Promise<string> {
@@ -36,11 +43,43 @@ export class ProxyService {
   }
 
   async createProxy(dto: CreateProxyDto) {
-    const proxys = dto.proxy.map((text) =>
-      this.proxyRepo.create({ proxy: text, type: dto.type }),
+    const { proxy, type } = dto;
+
+    // ищем совпадения
+    const existing = await this.proxyMaksRepo.find({
+      where: {
+        type,
+        proxy: In(proxy),
+      },
+    });
+
+    const existingTexts = existing.map((p) => p.proxy);
+
+    // фильтруем только новые
+    const uniqueProxies = proxy.filter((text) => !existingTexts.includes(text));
+
+    if (!uniqueProxies.length) {
+      throw new BadRequestException('Все прокси уже существуют');
+    }
+
+    const entities = uniqueProxies.map((text) =>
+      this.proxyRepo.create({ proxy: text, type }),
     );
-    return await this.proxyRepo.save(proxys);
+
+    return await this.proxyRepo.save(entities);
+
+    // return {
+    //   added: uniqueProxies,
+    //   skipped: existingTexts,
+    // };
   }
+
+  // async createProxy(dto: CreateProxyDto) {
+  //   const proxys = dto.proxy.map((text) =>
+  //     this.proxyRepo.create({ proxy: text, type: dto.type }),
+  //   );
+  //   return await this.proxyRepo.save(proxys);
+  // }
 
   async getAllProxy(type: ProxyType) {
     return await this.proxyRepo.find({
