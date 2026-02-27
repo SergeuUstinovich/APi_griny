@@ -1,4 +1,4 @@
-import { ProxyType } from 'src/proxy/proxy-type.enum';
+import { ProxyType } from '../proxy/proxy-type.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

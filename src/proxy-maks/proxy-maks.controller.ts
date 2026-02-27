@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ProxyMaksService } from './proxy-maks.service';
 import { ProxyMaksKeyGuard } from 'src/common/guards/proxy-maks.guard';
-import { ProxyType } from 'src/proxy/proxy-type.enum';
+import { ProxyType } from '../proxy/proxy-type.enum';
 
 @Controller('proxy-maks')
 export class ProxyMaksController {

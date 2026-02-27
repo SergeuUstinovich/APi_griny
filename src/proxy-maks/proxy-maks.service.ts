@@ -5,7 +5,7 @@ import { ProxyMaks } from './proxy-maks.entity';
 import { CreateProxyMaksDto } from './dto/create-proxy-maks.dto';
 import { Proxy } from '../proxy/proxy.entity';
 import { BadRequestException } from '@nestjs/common';
-import { ProxyType } from 'src/proxy/proxy-type.enum';
+import { ProxyType } from '../proxy/proxy-type.enum';
 
 @Injectable()
 export class ProxyMaksService {
