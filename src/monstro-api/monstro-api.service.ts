@@ -11,6 +11,8 @@ import { Keywords } from './keywords.entity';
 import { ChainsResponse } from './interface/list-chain.interface';
 import { Domains } from './domains.entity';
 import { ToggleDomainItemDto } from './dto/put-toggle-domains.dto';
+import { retry, timer, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 type ToggleResult = {
   domain: string;
@@ -189,7 +191,21 @@ export class MonstroApiService {
 
   async getChainsMainDomains(): Promise<ChainsResponse[]> {
     const response = await firstValueFrom(
-      this.httpService.get('https://api.dephub.dev/api/list_of_chain/'),
+      this.httpService.get('https://api.dephub.dev/api/list_of_chain/').pipe(
+        retry({
+          count: 3,
+          delay: (error, retryCount) => {
+            console.warn(
+              `Попытка ${retryCount} не удалась (ошибка ${error.response?.status}). Ретрай...`,
+            );
+            return timer(retryCount * 2000);
+          },
+        }),
+        catchError((err) => {
+          console.error('Все попытки получить ChainsMainDomains исчерпаны');
+          return throwError(() => err);
+        }),
+      ),
     );
     return response.data;
   }
