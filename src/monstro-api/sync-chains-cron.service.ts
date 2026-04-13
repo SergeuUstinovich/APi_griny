@@ -6,7 +6,7 @@ import { SyncChainsService } from './sync-chains.service';
 export class SyncChainsCronService {
   constructor(private readonly syncChainsService: SyncChainsService) {}
 
-  @Cron('0 * * * *')
+  @Cron('52 * * * *')
   async handleCron() {
     console.log('Запуск синхронизации цепочек раз в час');
     await this.syncChainsService.syncChains();
