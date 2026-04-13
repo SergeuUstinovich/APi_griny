@@ -7,7 +7,7 @@ import {
 @Injectable()
 export class BasicAuthGuard implements CanActivate {
   private readonly username = 'admin';
-  private readonly password = 'ckj;ysqgfhjkm';
+  private readonly password = 'fynbuhbif';
 
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();

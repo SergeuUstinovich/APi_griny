@@ -13,7 +13,7 @@ export class DynamicRequestService {
     private readonly courierRepo: Repository<Courier>,
   ) {}
 
-  @Interval(10000)
+  // @Interval(10000)
   async courierAutoRequest() {
     if (process.env.NODE_ENV !== 'production') {
       return;

@@ -7,6 +7,8 @@ import { ProjectsModule } from './projects/projects.module';
 import { RequestsModule } from './requests/requests.module';
 import { ProxyModule } from './proxy/proxy.module';
 import { ProxyMaksModule } from './proxy-maks/proxy-maks.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MonstroApiModule } from './monstro-api/monstro-api.module';
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { ProxyMaksModule } from './proxy-maks/proxy-maks.module';
       envFilePath: `${process.env.NODE_ENV === 'development' ? `.env.${process.env.NODE_ENV}` : '.env'}`,
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -30,6 +33,7 @@ import { ProxyMaksModule } from './proxy-maks/proxy-maks.module';
     RequestsModule,
     ProxyModule,
     ProxyMaksModule,
+    MonstroApiModule,
   ],
   controllers: [],
   providers: [],

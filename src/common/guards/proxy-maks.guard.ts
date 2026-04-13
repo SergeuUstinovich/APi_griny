@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 
 @Injectable()
 export class ProxyMaksKeyGuard implements CanActivate {
-  private readonly validKeys = ['rk.xlkzvfrcf']; 
+  private readonly validKeys = ['rk.xbvfrcf']; 
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();

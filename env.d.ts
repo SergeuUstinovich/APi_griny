@@ -9,5 +9,7 @@ declare namespace NodeJS {
     DB_NAME: string;
     PRIVATE_KEY_JWT: string;
     SECURE_COOKIE: string;
+    XAPIKEYMONSTRO: string;
+    TOGGLE_DOMAINS_KEY: string;
   }
 }
