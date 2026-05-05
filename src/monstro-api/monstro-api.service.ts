@@ -13,6 +13,7 @@ import { Domains } from './domains.entity';
 import { ToggleDomainItemDto } from './dto/put-toggle-domains.dto';
 import { retry, timer, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ILike } from 'typeorm';
 
 type ToggleResult = {
   domain: string;
@@ -96,21 +97,13 @@ export class MonstroApiService {
     this.isProcessing = true;
     const results: ToggleResult[] = [];
     try {
-      //собираем список доменов
-      const domains = dto.map((item) => item.domain);
-      //одним запросом вытаскиваем всё из БД
-      const domainEntities = await this.domainsRepository.find({
-        where: domains.map((d) => ({ domain: d })),
-      });
-      //делаем мапу для быстрого поиска
-      const domainMap = new Map(domainEntities.map((d) => [d.domain, d]));
-
       for (const item of dto) {
         const { domain, isActive } = item;
+        const domainEntities = await this.domainsRepository.find({
+          where: [{ domain: domain }, { domain: ILike(`${domain} %`), is_active: !isActive }],
+        });
 
-        const domainEntity = domainMap.get(domain);
-
-        if (!domainEntity) {
+        if (domainEntities.length === 0) {
           results.push({
             domain,
             success: false,
@@ -119,32 +112,35 @@ export class MonstroApiService {
           continue;
         }
 
-        try {
-          await this.putIsActiveProject(domainEntity.project_id, isActive);
-          await this.domainsRepository.update(domainEntity.id, {
-            is_active: isActive,
-          });
-          await this.sleep(800);
-          results.push({
-            domain,
-            projectId: domainEntity.project_id,
-            success: true,
-          });
-        } catch (e: any) {
-          results.push({
-            domain,
-            projectId: domainEntity.project_id,
-            success: false,
-            error: e.message,
-          });
+        for (const entity of domainEntities) {
+          try {
+            await this.putIsActiveProject(entity.project_id, isActive);
+            await this.domainsRepository.update(entity.id, {
+              is_active: isActive,
+            });
+
+            await this.sleep(2000);
+
+            results.push({
+              domain: entity.domain,
+              projectId: entity.project_id,
+              success: true,
+            });
+          } catch (e: any) {
+            results.push({
+              domain: entity.domain,
+              projectId: entity.project_id,
+              success: false,
+              error: e.message,
+            });
+          }
         }
       }
     } finally {
       this.isProcessing = false;
     }
-
     return {
-      total: dto.length,
+      total: results.length,
       results,
     };
   }
