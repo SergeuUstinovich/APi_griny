@@ -118,8 +118,8 @@ export class MonstroApiService {
             await this.domainsRepository.update(entity.id, {
               is_active: isActive,
             });
-
-            await this.sleep(2000);
+            //поддержка сказала 60 запросов в минуту
+            await this.sleep(1050);
 
             results.push({
               domain: entity.domain,
@@ -187,7 +187,9 @@ export class MonstroApiService {
 
   async getChainsMainDomains(): Promise<ChainsResponse[]> {
     const response = await firstValueFrom(
-      this.httpService.get('https://api.dephub.dev/api/list_of_chain/').pipe(
+      this.httpService.get('https://api.dephub.dev/api/list_of_chain/', {
+        headers: { 'DOP-Key': process.env.DOPKEYLISTCHAINS }
+      }).pipe(
         retry({
           count: 3,
           delay: (error, retryCount) => {

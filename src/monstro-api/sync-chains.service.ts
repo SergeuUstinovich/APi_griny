@@ -24,7 +24,7 @@ export class SyncChainsService {
   async syncChains() {
     const groups = await this.monstroApi.getDataGroup();
     let chainsMainDomains: ChainsResponse[] = [];
-
+    //добавить токен, Дима добавил защиту
     try {
       chainsMainDomains = await this.monstroApi.getChainsMainDomains();
     } catch (e) {
@@ -211,7 +211,7 @@ export class SyncChainsService {
       lastPage = response.meta.last_page;
       page++;
 
-      await sleep(1000);
+      await sleep(1050);
     } while (page <= lastPage);
 
     return allKeywords;

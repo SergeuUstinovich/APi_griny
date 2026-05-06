@@ -11,5 +11,6 @@ declare namespace NodeJS {
     SECURE_COOKIE: string;
     XAPIKEYMONSTRO: string;
     TOGGLE_DOMAINS_KEY: string;
+    DOPKEYLISTCHAINS: string;
   }
 }
