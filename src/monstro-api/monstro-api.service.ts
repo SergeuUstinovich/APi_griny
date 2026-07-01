@@ -119,7 +119,7 @@ export class MonstroApiService {
               is_active: isActive,
             });
             //поддержка сказала 60 запросов в минуту
-            await this.sleep(1050);
+            await this.sleep(2050);
 
             results.push({
               domain: entity.domain,

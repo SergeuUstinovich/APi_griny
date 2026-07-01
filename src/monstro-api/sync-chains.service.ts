@@ -43,13 +43,13 @@ export class SyncChainsService {
     }
     for (const group of groups.data) {
       try {
-        await sleep(2000);
+        await sleep(2050);
         const projectsResponse: ProjectResponse =
           await this.monstroApi.getDataProject(group.id);
 
         for (const project of projectsResponse.data) {
           try {
-            await sleep(2000);
+            await sleep(2050);
             const [chainIdStr, domainName] = project.name.split(' - ');
 
             if (!chainIdStr || !domainName) {
@@ -211,7 +211,7 @@ export class SyncChainsService {
       lastPage = response.meta.last_page;
       page++;
 
-      await sleep(1050);
+      await sleep(2050);
     } while (page <= lastPage);
 
     return allKeywords;
