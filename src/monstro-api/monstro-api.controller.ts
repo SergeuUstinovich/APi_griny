@@ -33,14 +33,16 @@ export class MonstroApiController {
       throw new ForbiddenException('Неверный ключ доступа');
     }
     // Отдаем сразу ответ
-    const response = { message: 'Запрос принят, процесс запущен' };
-    setImmediate(async () => {
-      try {
-        await this.monstroApiService.toggleDomains(dto);
-      } catch (e) {
-        console.error('Ошибка в фоновом процессе toggleDomains:', e);
-      }
-    });
+    // const response = { message: 'Запрос принят, процесс запущен' };
+    // setImmediate(async () => {
+    //   try {
+    //     await this.monstroApiService.toggleDomains(dto);
+    //   } catch (e) {
+    //     console.error('Ошибка в фоновом процессе toggleDomains:', e);
+    //   }
+    // });
+    const response = await this.monstroApiService.toggleDomains(dto);
+    console.log(response)
     return response;
   }
 }

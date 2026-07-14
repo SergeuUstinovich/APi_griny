@@ -114,15 +114,15 @@ export class MonstroApiService {
 
         for (const entity of domainEntities) {
           try {
-            if (entity.is_active === isActive) {
-              results.push({
-                domain: entity.domain,
-                projectId: entity.project_id,
-                success: true,
-                info: `Уже находится в статусе ${isActive ? 'включен' : 'выключен'}`,
-              });
-              continue; // Пропускаем sleep(2050) и запрос к внешнему API
-            }
+            // if (entity.is_active === isActive) {
+            //   results.push({
+            //     domain: entity.domain,
+            //     projectId: entity.project_id,
+            //     success: true,
+            //     info: `Уже находится в статусе ${isActive ? 'включен' : 'выключен'}`,
+            //   });
+            //   continue; // Пропускаем sleep(2050) и запрос к внешнему API
+            // }
             await this.putIsActiveProject(entity.project_id, isActive);
             await this.domainsRepository.update(entity.id, {
               is_active: isActive,
