@@ -20,6 +20,7 @@ type ToggleResult = {
   projectId?: number;
   success: boolean;
   error?: string;
+  info?: string;
 };
 
 @Injectable()
@@ -100,9 +101,8 @@ export class MonstroApiService {
       for (const item of dto) {
         const { domain, isActive } = item;
         const domainEntities = await this.domainsRepository.find({
-          where: [{ domain: domain }, { domain: ILike(`${domain} %`), is_active: !isActive }],
+          where: [{ domain: ILike(domain) }, { domain: ILike(`${domain} (%`) }],
         });
-
         if (domainEntities.length === 0) {
           results.push({
             domain,
@@ -114,6 +114,15 @@ export class MonstroApiService {
 
         for (const entity of domainEntities) {
           try {
+            if (entity.is_active === isActive) {
+              results.push({
+                domain: entity.domain,
+                projectId: entity.project_id,
+                success: true,
+                info: `Уже находится в статусе ${isActive ? 'включен' : 'выключен'}`,
+              });
+              continue; // Пропускаем sleep(2050) и запрос к внешнему API
+            }
             await this.putIsActiveProject(entity.project_id, isActive);
             await this.domainsRepository.update(entity.id, {
               is_active: isActive,
@@ -187,23 +196,25 @@ export class MonstroApiService {
 
   async getChainsMainDomains(): Promise<ChainsResponse[]> {
     const response = await firstValueFrom(
-      this.httpService.get('https://api.dephub.dev/api/list_of_chain/', {
-        headers: { 'DOP-Key': process.env.DOPKEYLISTCHAINS }
-      }).pipe(
-        retry({
-          count: 3,
-          delay: (error, retryCount) => {
-            console.warn(
-              `Попытка ${retryCount} не удалась (ошибка ${error.response?.status}). Ретрай...`,
-            );
-            return timer(retryCount * 2000);
-          },
-        }),
-        catchError((err) => {
-          console.error('Все попытки получить ChainsMainDomains исчерпаны');
-          return throwError(() => err);
-        }),
-      ),
+      this.httpService
+        .get('https://api.dephub.dev/api/list_of_chain/', {
+          headers: { 'DOP-Key': process.env.DOPKEYLISTCHAINS },
+        })
+        .pipe(
+          retry({
+            count: 3,
+            delay: (error, retryCount) => {
+              console.warn(
+                `Попытка ${retryCount} не удалась (ошибка ${error.response?.status}). Ретрай...`,
+              );
+              return timer(retryCount * 2000);
+            },
+          }),
+          catchError((err) => {
+            console.error('Все попытки получить ChainsMainDomains исчерпаны');
+            return throwError(() => err);
+          }),
+        ),
     );
     return response.data;
   }
