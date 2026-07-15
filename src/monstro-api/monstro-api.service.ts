@@ -101,7 +101,7 @@ export class MonstroApiService {
       for (const item of dto) {
         const { domain, isActive } = item;
         const domainEntities = await this.domainsRepository.find({
-          where: [{ domain: ILike(domain) }, { domain: ILike(`${domain} (%`) }],
+          where: [{ domain: ILike(domain) }, { domain: ILike(`${domain} %`) }],
         });
         if (domainEntities.length === 0) {
           results.push({
